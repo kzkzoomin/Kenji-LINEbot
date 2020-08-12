@@ -57,10 +57,11 @@ def handle_message(event):
     text = event.message.text
 
     if not is_invalid(text):
-        response = respond(text)
+        response = TextSendMessage(text=respond(text))
         reply_message(event, response)
     else:
-        response = "ごめんなさい、ひらがな・カタカナしかつかえません！"
+        gomen = "ごめんなさい、ひらがな・カタカナしかつかえません！"
+        response = TextSendMessage(text=gomen)
         reply_message(event, response)
 
 ### ここから賢治bot用の関数 ###
