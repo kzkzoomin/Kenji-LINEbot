@@ -16,13 +16,18 @@ YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
-# かなリスト・辞書・モデルはグローバルで宣言、初期化
-chars_list = []
-char_indices = {}
-encoder_model = None
-decoder_model = None
+# かなリスト・辞書・モデル
+with open('kana_chars.pickle', mode='rb') as f:
+    chars_list = pickle.load(f)
+with open('char_indices.pickle', mode='rb') as f:
+    char_indices = pickle.load(f)
+
 n_char = len(chars_list)
 max_length_x = 128
+
+encoder_model = None
+decoder_model = None
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -61,10 +66,6 @@ def handle_message(event):
 def is_invalid(message):
     is_invalid =False
     global chars_list
-    # 一番初めだけ chars_list をロード
-    if chars_list == []:
-        with open('kana_chars.pickle', mode='rb') as f:
-            chars_list = pickle.load(f)
     for char in message:
         if char not in chars_list:
             is_invalid = True
@@ -73,11 +74,6 @@ def is_invalid(message):
 # 文章をone-hot表現に変換する関数
 def sentence_to_vector(sentence):
     global chars_list, char_indices, n_char, max_length_x
-    # 一番初めだけ char_indices をロード
-    if char_indices == {}:
-        with open('char_indices.pickle', mode='rb') as f:
-            char_indices = pickle.load(f)
-
     vector = np.zeros((1, max_length_x, n_char), dtype=np.bool)
     for j, char in enumerate(sentence):
         vector[0][j][char_indices[char]] = 1
