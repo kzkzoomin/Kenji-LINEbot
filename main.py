@@ -27,10 +27,6 @@ with open('indices_char.pickle', mode='rb') as f:
 n_char = len(chars_list)
 max_length_x = 128
 
-encoder_model = load_model('encoder_model.h5')
-decoder_model = load_model('decoder_model.h5')
-
-
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -84,7 +80,10 @@ def sentence_to_vector(sentence):
 
 # 文章を生成する関数
 def respond(message, beta=5):
-    global encoder_model, decoder_model, n_char, indices_char
+    global n_char, indices_char
+
+    encoder_model = load_model('encoder_model.h5')
+    decoder_model = load_model('decoder_model.h5')
 
     vec = sentence_to_vector(message)  # 入力した文字列をone-hot表現に変換
     state_value = encoder_model.predict(vec)  # エンコーダーへ入力
