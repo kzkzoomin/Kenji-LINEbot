@@ -16,7 +16,7 @@ YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
 
-# かなリスト・辞書・モデル
+# かなリスト・辞書
 with open('kana_chars.pickle', mode='rb') as f:
     chars_list = pickle.load(f)
 with open('char_indices.pickle', mode='rb') as f:
