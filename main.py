@@ -70,11 +70,14 @@ def is_invalid(message):
 
 # 文章をone-hot表現に変換する関数
 def sentence_to_vector(sentence):
-    global char_indices
+    global chars_list, char_indices
     # 一番初めだけ char_indices をロード
     if char_indices == {}:
         with open('char_indices.pickle', mode='rb') as f:
             char_indices = pickle.load(f)
+
+    n_char = len(chars_list)
+    max_length_x = 128
     vector = np.zeros((1, max_length_x, n_char), dtype=np.bool)
     for j, char in enumerate(sentence):
         vector[0][j][char_indices[char]] = 1
