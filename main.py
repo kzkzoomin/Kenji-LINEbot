@@ -58,6 +58,7 @@ def handle_message(event):
 # 使える文字かどうか判定する関数
 def is_invalid(message):
     is_invalid =False
+    global chars_list
     # 一番初めだけ chars_list をロード
     if chars_list == []:
         with open('kana_chars.pickle', mode='rb') as f:
@@ -69,6 +70,7 @@ def is_invalid(message):
 
 # 文章をone-hot表現に変換する関数
 def sentence_to_vector(sentence):
+    global char_indices
     # 一番初めだけ char_indices をロード
     if char_indices == {}:
         with open('char_indices.pickle', mode='rb') as f:
@@ -80,6 +82,7 @@ def sentence_to_vector(sentence):
 
 # 文章を生成する関数
 def respond(message, beta=5):
+    global encoder_model, decoder_model
     # 一番初めだけモデルをロード
     if encoder_model is None:
         encoder_model = load_model('encoder_model.h5')
