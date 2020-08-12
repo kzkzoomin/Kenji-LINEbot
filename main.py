@@ -21,6 +21,8 @@ with open('kana_chars.pickle', mode='rb') as f:
     chars_list = pickle.load(f)
 with open('char_indices.pickle', mode='rb') as f:
     char_indices = pickle.load(f)
+with open('indices_char.pickle', mode='rb') as f:
+    indices_char = pickle.load(f)
 
 n_char = len(chars_list)
 max_length_x = 128
@@ -81,7 +83,7 @@ def sentence_to_vector(sentence):
 
 # 文章を生成する関数
 def respond(message, beta=5):
-    global encoder_model, decoder_model, n_char
+    global encoder_model, decoder_model, n_char, indices_char
     # 一番初めだけモデルをロード
     if encoder_model is None:
         encoder_model = load_model('encoder_model.h5')
